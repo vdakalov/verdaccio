@@ -6,7 +6,7 @@ import locale from 'element-react/src/locale/lang/en';
 
 import storage from './utils/storage';
 import logo from './utils/logo';
-import {makeLogin, isTokenExpire} from './utils/login';
+import {makeLogin} from './utils/login';
 
 import Header from './components/Header';
 import Footer from './components/Footer';
@@ -48,7 +48,7 @@ export default class App extends Component {
     const token = storage.getItem('token');
     const username = storage.getItem('username');
 
-    if (isTokenExpire(token) || isNil(username)) {
+    if (isNil(token) || isNil(username)) {
       this.handleLogout();
     } else {
       this.setState({
@@ -64,7 +64,7 @@ export default class App extends Component {
   }
 
   /**
-   * Toogles the login modal
+   * Toggles the login modal
    * Required by: <LoginModal /> <Header />
    */
   toggleLoginModal() {
