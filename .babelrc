@@ -23,7 +23,8 @@
         "transform-runtime",
         "transform-object-rest-spread",
         "transform-decorators-legacy",
-        "syntax-dynamic-import"
+        "syntax-dynamic-import",
+        "emotion"
       ]
     },
     "test": {
@@ -68,9 +69,15 @@
         "transform-class-properties"
       ]
     },
+    "production": {
+      "plugins": [["emotion", { "hoist": true }]]
+    },
     "development": {
       "presets": ["flow"],
-      "plugins": ["flow-runtime"]
+      "plugins": [
+        "flow-runtime", 
+        ["emotion", { "sourceMap": true, "autoLabel": true }]
+      ]
     }
   }
 }
