@@ -1,6 +1,12 @@
-import React, {Component} from 'react';
+import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import {Form, Button, Dialog, Input, Alert} from 'element-react';
+import Button from '@material-ui/core/Button';
+import DialogTitle from '@material-ui/core/DialogTitle';
+import Dialog from '@material-ui/core/Dialog';
+import DialogActions from '@material-ui/core/DialogActions';
+import DialogContent from '@material-ui/core/DialogContent';
+import TextField from '@material-ui/core/TextField';
+import { Input, Alert } from 'element-react';
 
 export default class LoginModal extends Component {
   static propTypes = {
@@ -13,8 +19,8 @@ export default class LoginModal extends Component {
   static defaultProps = {
     visibility: true,
     error: {},
-    onCancel: () => {},
-    onSubmit: () => {}
+    onCancel: () => { },
+    onSubmit: () => { }
   }
 
   state = {
@@ -41,14 +47,14 @@ export default class LoginModal extends Component {
   async submitCredentials(event) {
     // prevents default submit behaviour
     event.preventDefault();
-    const {username, password} = this.state;
+    const { username, password } = this.state;
     await this.props.onSubmit(username, password);
     // let's wait for API response and then set
     // username and password filed to empty state
-    this.setState({username: '', password: ''});
+    this.setState({ username: '', password: '' });
   }
 
-  renderLoginError({type, title, description} = {}) {
+  renderLoginError({ type, title, description } = {}) {
     return type ? (
       <Alert
         title={title}
@@ -61,49 +67,53 @@ export default class LoginModal extends Component {
   }
 
   render() {
-    const {visibility, onCancel, error} = this.props;
-    const {username, password} = this.state;
+    const { visibility, onCancel, error } = this.props;
+    const { username, password } = this.state;
     return (
       <div className="login-dialog">
         <Dialog
-          title="Login"
-          size="tiny"
-          visible={visibility}
-          onCancel={onCancel}
+          onClose={onCancel}
+          open={visibility}
+          maxWidth="md"
+          aria-labelledby="login-dialog"
         >
-          <Form className="login-form">
-            <Dialog.Body>
-              {this.renderLoginError(error)}
-              <br />
-              <Input
-                name="username"
-                placeholder="Username"
-                value={username}
-                onChange={this.setCredentials.bind(this, 'username')}
-              />
-              <br />
-              <br />
-              <Input
-                name="password"
-                type="password"
-                placeholder="Type your password"
-                value={password}
-                onChange={this.setCredentials.bind(this, 'password')}
-              />
-            </Dialog.Body>
-            <Dialog.Footer className="dialog-footer">
-              <Button onClick={onCancel} className="cancel-login-button">
-                Cancel
+          <DialogTitle id="login-dialog">Login</DialogTitle>
+          <DialogContent>
+            {this.renderLoginError(error)}
+            <br />
+            <TextField
+              label="Username"
+              defaultValue={username}
+              onChange={this.setCredentials.bind(this, 'username')}
+              margin="normal"
+            />
+
+            <br />
+            <br />
+            <Input
+              name="password"
+              type="password"
+              placeholder="Type your password"
+              value={password}
+              onChange={this.setCredentials.bind(this, 'password')}
+            />
+          </DialogContent>
+          <DialogActions className="dialog-footer">
+            <Button
+              onClick={onCancel}
+              className="cancel-login-button"
+              color="inherit"
+            >
+              Cancel
               </Button>
-              <Button
-                nativeType="submit"
-                className="login-button"
-                onClick={this.submitCredentials}
-              >
-                Login
+            <Button
+              className="login-button"
+              onClick={this.submitCredentials}
+              color="inherit"
+            >
+              Login
             </Button>
-            </Dialog.Footer>
-          </Form>
+          </DialogActions>
         </Dialog>
       </div>
     );
